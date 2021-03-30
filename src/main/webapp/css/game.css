@@ -1,0 +1,44 @@
+#gameContainer{
+    background-color: black;
+    color:white;
+}
+
+#gameContent{
+}
+
+#gameMatrix{
+    overflow: auto;
+    height: 50vh;;
+}
+
+#imageSkull{
+    display: inline-block
+}
+#imageLife {
+    display: inline-block;
+}
+
+#matrixCell{
+    border: 1px solid black;
+    width: 100px;
+    max-width: 100px;
+}
+
+.matrixController{
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#matrixTable{
+    overflow: auto;
+    table-layout: auto;
+}
+
+.table-image{
+    border: 1px solid black;
+    white-space: pre-wrap;        /* css */
+    white-space: -moz-pre-wrap;   /* Mozilla */
+    white-space: -pre-wrap;       /* Chrome*/
+    white-space: -o-pre-wrap;     /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
