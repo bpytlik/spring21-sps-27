@@ -4,3 +4,4 @@
 .theia/
 .vscode/
 target/
+*.class
