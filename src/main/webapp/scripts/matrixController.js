@@ -1,6 +1,7 @@
 var rowOpening = "<tr>";
 var rowClosure = "</tr>";
 var cellZoom = "style = \"width: 3em; height: 3em\"";
+var zoomLevel = 3;
 var alive = "<td class = \"matrixCell\"><img src = \"../images/alive normal cell.png\" " + cellZoom+"class = \"table-image\" ";
 var death = "<td class = \"matrixCell\"><img src = \"../images/dead cell.png\" "+cellZoom+"class = \"table-image\" ";
 var cellClosure = "></td>";
@@ -11,7 +12,7 @@ var matrix = [[0,0,0],[0,0,0],[0,0,0]];
 var playSpeed = 1000;
 var cellWithMask = false;
 var cellWithVaccine = false;
-var playing = false;
+var playing = false; 
 var timeController = null;
 var cellDictionary ={
     0: "../images/dead cell.png",
@@ -25,22 +26,50 @@ var cellDictionary ={
     8: "../images/infected mask vaccine.png"
 };
 
-function generateRandomMatrix(){
+var stateIndex = 0;
+
+function generateRandomMatrix(continueWithGameLogic){
+    let oldMatrix = matrix;
+    matrix =[];
     for(let row = 0; row < rows; row++){
+        let newMatrixRow = [];
         for(let column = 0 ; column < columns ; column++ ){
-            document.getElementById(row.toString() + column.toString()).src = cellDictionary[ Math.floor( Math.random() * 8 ) ];
+            let nextCell =  Math.floor( Math.random() * 8 )
+            newMatrixRow.push(nextCell)
+            document.getElementById(row.toString() + column.toString()).src = cellDictionary[ nextCell ];
         }
+        matrix.push(newMatrixRow);
     }
-    gameLogic();
+
+    if ( document.getElementById("matrixZoom").value != zoomLevel){
+        updateZoom(true);
+    }
+
+    if ((document.getElementById("matrixRows").value != rows) || (document.getElementById("matrixColumns").value != columns)){
+        updateMatrix(true);
+    }
+
+
+    if(continueWithGameLogic)
+        gameLogic();
 }
 
 function gameLogic(){
     if(playing){
-        timeController = setTimeout(() => {
-                                                if(playing){
-                                                    generateRandomMatrix();
-                                                }
-                                            }, playSpeed);
+        timeController = setTimeout(() => 
+            {
+                if(playing){
+                    generateRandomMatrix(true);
+                }
+            }, playSpeed);
+    }
+}
+
+function loadPreviousStateHelper(){
+    for(let row = 0; row < rows ; row ++ ){
+        for(let column = 0; column < columns ; column++){
+            document.getElementById(row.toString() + column.toString()).src = cellDictionary[matrix[row][column]];
+        }
     }
 }
 
@@ -66,23 +95,25 @@ function updateCellModifier(target){
     console.log(cellWithVaccine);
 }
 
-function updateMatrix(){
-    matrix = []
-    rows = document.getElementById("matrixRows").value;
-    columns = document.getElementById("matrixColumns").value;
-    let matrixToTable = "";
-    let updateFunction = "onclick = \"updateMatrixCell(this)\"";
-    for(let row = 0; row < rows; row++){
-        let tempRow = []
-        matrixToTable += rowOpening;
-        for(let column = 0; column < columns; column++){
-            tempRow.push(0)
-            matrixToTable += death + "id = \"" + row.toString() + column.toString() + "\" " + updateFunction + cellClosure;
+function updateMatrix(update){
+    if((!playing && !update) || (playing && update)){
+        matrix = []
+        rows = document.getElementById("matrixRows").value;
+        columns = document.getElementById("matrixColumns").value;
+        let matrixToTable = "";
+        let updateFunction = "onclick = \"updateMatrixCell(this)\"";
+        for(let row = 0; row < rows; row++){
+            let tempRow = []
+            matrixToTable += rowOpening;
+            for(let column = 0; column < columns; column++){
+                tempRow.push(0)
+                matrixToTable += death + "id = \"" + row.toString() + column.toString() + "\" " + updateFunction + cellClosure;
+            }
+            matrix.push(tempRow);
+            matrixToTable += rowClosure;
         }
-        matrix.push(tempRow);
-        matrixToTable += rowClosure;
+        document.getElementById("matrixTable").innerHTML = matrixToTable;
     }
-    document.getElementById("matrixTable").innerHTML = matrixToTable;
 }
 
 
@@ -159,21 +190,23 @@ function updateSpeed(object){
     document.getElementById("matrixSpeedLabel").innerText = "Speed: " + object.value.toString();
 }
 
-function updateZoom(){
-    let newZoomLevel = document.getElementById("matrixZoom").value;
-    document.getElementById('matrixZoomLabel').innerText = "Zoom: " + (newZoomLevel - 2).toString();
-    cellZoom = "style = \"width: "+newZoomLevel+"em; height: "+newZoomLevel+"em\"";
-    alive = "<td class = \"matrixCell\"><img src = \"../images/alive normal cell.png\" " + cellZoom+"class = \"table-image\" ";
-    death = "<td class = \"matrixCell\"><img src = \"../images/dead cell.png\" "+cellZoom+"class = \"table-image\" ";
+function updateZoom(update){
+    if((!playing && !update) || (playing && update)){
+        zoomLevel = document.getElementById("matrixZoom").value;
+        document.getElementById('matrixZoomLabel').innerText = "Zoom: " + (zoomLevel - 2).toString();
+        cellZoom = "style = \"width: "+zoomLevel+"em; height: "+zoomLevel+"em\"";
+        alive = "<td class = \"matrixCell\"><img src = \"../images/alive normal cell.png\" " + cellZoom+"class = \"table-image\" ";
+        death = "<td class = \"matrixCell\"><img src = \"../images/dead cell.png\" "+cellZoom+"class = \"table-image\" ";
 
-    for(let row = 0; row < rows; row++){
-        for( let column = 0; column < columns; column++){
+        for(let row = 0; row < rows; row++){
+            for( let column = 0; column < columns; column++){
 
-            let cell = document.getElementById(row.toString() + column.toString());
+                let cell = document.getElementById(row.toString() + column.toString());
 
-            cell.style['width'] = newZoomLevel.toString() + "em";
-            cell.style['height'] = newZoomLevel.toString() + "em";
+                cell.style['width'] = zoomLevel.toString() + "em";
+                cell.style['height'] = zoomLevel.toString() + "em";
 
+            }
         }
     }
 }
