@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.SplittableRandom;
 
 /** 
- * {@link}
+ * 
  */
 enum Cell {
 
@@ -47,9 +47,11 @@ enum Cell {
 public class Matrix {
 
     private byte[][] matrix;
+    private InfectionProbability infectionProbability;
 
-    public Matrix(String stringMatrix) {
+    public Matrix(String stringMatrix, InfectionProbability infectionProbability) {
         stringToMatrix(stringMatrix);
+        this.infectionProbability = infectionProbability;
     }
 
     public void updateMatrix() {
@@ -72,22 +74,23 @@ public class Matrix {
         List<Byte> neighbors = getNeighbors(row, column, tempMatrix);
         int numberOfNeighbors = neighbors.size();
 
-        byte currentCellCode = tempMatrix[row][column];
+        Cell currentCell = encodeCell(tempMatrix[row][column]);
 
-        if (currentCellCode != Cell.DEAD.getCode()) {
-            List<Byte> aliveCells = Arrays.asList   (   
-                                                        Cell.ALIVE.getCode(), Cell.ALIVE_MASK.getCode(), 
-                                                        Cell.ALIVE_VACCINE.getCode(), Cell.ALIVE_MASK_AND_VACCINE.getCode()
+        if (currentCell != Cell.DEAD) {
+            List<Cell> aliveCells = Arrays.asList   (   
+                                                        Cell.ALIVE, Cell.ALIVE_MASK, 
+                                                        Cell.ALIVE_VACCINE, Cell.ALIVE_MASK_AND_VACCINE
                                                     );
 
             if (numberOfNeighbors < 2 || numberOfNeighbors > 3) {
                 this.matrix[row][column] = Cell.DEAD.getCode();
             }
-            else if (aliveCells.contains(currentCellCode)) {
+            else if (aliveCells.contains(currentCell)) {
                 Cell infectedNeighbor = getInfectedNeighbor(neighbors);
 
                 if (infectedNeighbor != null) {
-                    this.matrix[row][column] = getInfectedVersionOfCell(currentCellCode);
+                    boolean isCellInfected = this.isCellInfected(currentCell, infectedNeighbor);
+                    if (isCellInfected) this.matrix[row][column] = getInfectedVersionOfCell(currentCell).getCode();
                 }
             }
         }
@@ -98,12 +101,30 @@ public class Matrix {
         }
     }
 
-    private byte getInfectedVersionOfCell(byte cellCode) {        
-        if (cellCode == Cell.ALIVE.getCode()) return Cell.INFECTED.getCode();
-        else if (cellCode == Cell.ALIVE_MASK.getCode()) return Cell.INFECTED_MASK.getCode();
-        else if (cellCode == Cell.ALIVE_VACCINE.getCode()) return Cell.INFECTED_VACCINE.getCode();
-        else if (cellCode == Cell.ALIVE_MASK_AND_VACCINE.getCode()) return Cell.INFECTED_MASK_AND_VACCINE.getCode();
-        else return cellCode;
+    private boolean isCellInfected(Cell aliveCell, Cell infectedCell) {
+        double  aliveProbability = this.getInfectionProbability(aliveCell),
+                infectedProbability = this.getInfectionProbability(infectedCell),
+                combinedInfectionProbability = aliveProbability + infectedProbability - (aliveProbability * infectedProbability);
+
+        SplittableRandom random = new SplittableRandom();
+        double randomProbability = random.nextDouble(1.0);
+        
+        return randomProbability < combinedInfectionProbability; 
+    }
+
+    private double getInfectionProbability(Cell cell) {
+        if (cell == Cell.ALIVE || cell == Cell.INFECTED) return infectionProbability.NO_PROTECTION;
+        else if (cell == Cell.ALIVE_MASK || cell == Cell.INFECTED_MASK) return infectionProbability.WITH_MASK;
+        else if (cell == Cell.ALIVE_VACCINE || cell == Cell.INFECTED_VACCINE) return infectionProbability.WITH_VACCINE;
+        else return infectionProbability.WITH_MASK_AND_VACCINE;
+    }
+
+    private Cell getInfectedVersionOfCell(Cell cell) {        
+        if (cell == Cell.ALIVE) return Cell.INFECTED;
+        else if (cell == Cell.ALIVE_MASK) return Cell.INFECTED_MASK;
+        else if (cell == Cell.ALIVE_VACCINE) return Cell.INFECTED_VACCINE;
+        else if (cell == Cell.ALIVE_MASK_AND_VACCINE) return Cell.INFECTED_MASK_AND_VACCINE;
+        else return cell;
     }
 
     private Cell getInfectedNeighbor(List<Byte> neighbors) {
@@ -273,7 +294,8 @@ public class Matrix {
     
 
     public static void main(String[] args) {
-        Matrix matrix = new Matrix("4,4,0000735000000000");
+        InfectionProbability ip = new InfectionProbability(.855, .206, .53);
+        Matrix matrix = new Matrix("4,4,0000735000000000", ip);
         matrix.updateMatrix();
     }
 }
