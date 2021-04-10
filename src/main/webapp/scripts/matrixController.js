@@ -31,16 +31,18 @@ var stateIndex = 0;
 function generateRandomMatrix(continueWithGameLogic){
     let oldMatrix = matrix;
     matrix =[];
+    console.log("--------------------------");
     for(let row = 0; row < rows; row++){
         let newMatrixRow = [];
         for(let column = 0 ; column < columns ; column++ ){
             let nextCell =  Math.floor( Math.random() * 8 )
+            console.log(row.toString() + " " + column.toString() + " " + nextCell.toString());
             newMatrixRow.push(nextCell)
             document.getElementById(row.toString() + column.toString()).src = cellDictionary[ nextCell ];
         }
         matrix.push(newMatrixRow);
     }
-
+    console.log("--------------------------");
     if ( document.getElementById("matrixZoom").value != zoomLevel){
         updateZoom(true);
     }
@@ -161,6 +163,9 @@ function updateMatrixCell(object){
     }
 }
 
+function updateMaskProbability(object){
+    document.getElementById("maskProbabilityLabel").innerText = "Probability to get infected with mask: " + object.value.toString();
+}
 function updateSelectedCellType(object){
     selectedCellType = object.id;
     switch(selectedCellType)
@@ -188,6 +193,10 @@ function updateSelectedCellType(object){
 function updateSpeed(object){
     playSpeed = 1000 - ( (parseInt(object.value) - 1) * 100 );
     document.getElementById("matrixSpeedLabel").innerText = "Speed: " + object.value.toString();
+}
+
+function updateVaccineProbability(object){
+    document.getElementById("matrixSpeedLabel").innerText = "Probability to get infected with vaccine: " + object.value.toString();
 }
 
 function updateZoom(update){
