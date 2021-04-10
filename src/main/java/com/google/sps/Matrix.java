@@ -1,3 +1,5 @@
+package com.google.sps;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,18 +11,6 @@ import java.util.SplittableRandom;
  * 
  */
 enum Cell {
-
-    /*
-    0 --> dead
-    1 --> alive
-    2 --> alive with mask
-    3 --> alive with vaccine
-    4 --> alive with mask and vaccine
-    5 --> infected
-    6 --> infected with mask
-    7 --> infected with vaccine
-    8 --> infected with mask and vaccine
-    */
 
     DEAD ((byte) '0'),
     ALIVE ((byte) '1'),
@@ -279,7 +269,7 @@ public class Matrix {
 
     private byte[][] getMatrixCopy(byte[][] matrix) {
         int rows = matrix.length,
-        columns = matrix[0].length;
+            columns = matrix[0].length;
 
         byte[][] matrixCopy = new byte[rows][columns];
 
@@ -291,12 +281,29 @@ public class Matrix {
 
         return matrixCopy;
     }
+
+    public String getStringMatrix() {
+        int rows = this.matrix.length,
+            columns = this.matrix[0].length;
+
+        String stringMatrix = Integer.toString(rows) + "," + Integer.toString(columns) + ",";
+
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                stringMatrix += (char) matrix[row][column];
+            }
+        }
+
+        return stringMatrix;
+    }
     
 
     public static void main(String[] args) {
         InfectionProbability ip = new InfectionProbability(.855, .206, .53);
         Matrix matrix = new Matrix("4,4,0000735000000000", ip);
+        System.out.println(matrix.getStringMatrix());
         matrix.updateMatrix();
+        System.out.println(matrix.getStringMatrix());
     }
 }
 
