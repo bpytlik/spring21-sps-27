@@ -1,0 +1,72 @@
+.cellModifier{
+    margin-top: 0.8em;
+    font-size: 1em;
+}
+
+.cellModifierLabel{
+    margin-top: 1.5em;
+    font-size: 1em;
+}
+
+.cellSelector{
+    width: 3.5em;
+    height: 3.5em;
+}
+
+#cellSelectContainer{
+    margin-top: -0.4em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+#cellType{
+    margin-top: -2em;
+}
+
+#gameContainer{
+    background-color: black;
+    color:white;
+}
+
+
+#gameMatrix{
+    overflow: auto;
+    height: 50vh;;
+}
+
+#imageSkull{
+    display: inline-block
+}
+#imageLife {
+    display: inline-block;
+}
+
+#matrixCell{
+    border: 1px solid black;
+    width: 100px;
+    max-width: 100px;
+}
+
+.matrixController{
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#matrixTable{
+    overflow: auto;
+    table-layout: auto;
+}
+
+#selectCellLabel{
+    border: 1em inset white;;
+}
+
+.table-image{
+    border: 1px solid black;
+    white-space: pre-wrap;        /* css */
+    white-space: -moz-pre-wrap;   /* Mozilla */
+    white-space: -pre-wrap;       /* Chrome*/
+    white-space: -o-pre-wrap;     /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
