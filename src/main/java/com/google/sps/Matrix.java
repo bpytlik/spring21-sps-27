@@ -1,4 +1,15 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
+import java.util.SplittableRandom;
+
+/** 
+ * {@link}
+ */
 enum Cell {
+
     /*
     0 --> dead
     1 --> alive
@@ -12,8 +23,15 @@ enum Cell {
     */
 
     DEAD ((byte) '0'),
-    ALIVE ((byte) '1');
-  
+    ALIVE ((byte) '1'),
+    ALIVE_MASK ((byte) '2'),
+    ALIVE_VACCINE ((byte) '3'),
+    ALIVE_MASK_AND_VACCINE ((byte) '4'),
+    INFECTED ((byte) '5'),
+    INFECTED_MASK ((byte) '6'),
+    INFECTED_VACCINE ((byte) '7'),
+    INFECTED_MASK_AND_VACCINE ((byte) '8');
+
     private byte cellCode;
   
     public byte getCode() {
@@ -24,6 +42,7 @@ enum Cell {
         this.cellCode = cellCode;
     }
 }
+
 
 public class Matrix {
 
@@ -36,7 +55,6 @@ public class Matrix {
     public void updateMatrix() {
         int rows = this.matrix.length,
             columns = this.matrix[0].length;
-
 
         byte[][] tempMatrix = getMatrixCopy(this.matrix);
 
@@ -51,34 +69,126 @@ public class Matrix {
     }
 
     private void updateCell(int row, int column, byte[][] tempMatrix) {
-        int neighbors = getNumberOfNeighbors(row, column, tempMatrix);
+        List<Byte> neighbors = getNeighbors(row, column, tempMatrix);
+        int numberOfNeighbors = neighbors.size();
 
         byte currentCellCode = tempMatrix[row][column];
 
-        if (currentCellCode == Cell.ALIVE.getCode()) {
-            if (neighbors < 2 || neighbors > 3) {
+        if (currentCellCode != Cell.DEAD.getCode()) {
+            List<Byte> aliveCells = Arrays.asList   (   
+                                                        Cell.ALIVE.getCode(), Cell.ALIVE_MASK.getCode(), 
+                                                        Cell.ALIVE_VACCINE.getCode(), Cell.ALIVE_MASK_AND_VACCINE.getCode()
+                                                    );
+
+            if (numberOfNeighbors < 2 || numberOfNeighbors > 3) {
                 this.matrix[row][column] = Cell.DEAD.getCode();
             }
+            else if (aliveCells.contains(currentCellCode)) {
+                Cell infectedNeighbor = getInfectedNeighbor(neighbors);
+
+                if (infectedNeighbor != null) {
+                    this.matrix[row][column] = getInfectedVersionOfCell(currentCellCode);
+                }
+            }
         }
-        else if (currentCellCode == Cell.DEAD.getCode()) {
-            if (neighbors == 3) {
+        else {
+            if (numberOfNeighbors == 3) {
                 this.matrix[row][column] = Cell.ALIVE.getCode();
             }
         }
-
     }
 
-    private int getNumberOfNeighbors(int row, int column, byte[][] tempMatrix) {
-        int neighbors = 0;
+    private byte getInfectedVersionOfCell(byte cellCode) {        
+        if (cellCode == Cell.ALIVE.getCode()) return Cell.INFECTED.getCode();
+        else if (cellCode == Cell.ALIVE_MASK.getCode()) return Cell.INFECTED_MASK.getCode();
+        else if (cellCode == Cell.ALIVE_VACCINE.getCode()) return Cell.INFECTED_VACCINE.getCode();
+        else if (cellCode == Cell.ALIVE_MASK_AND_VACCINE.getCode()) return Cell.INFECTED_MASK_AND_VACCINE.getCode();
+        else return cellCode;
+    }
 
-        neighbors += this.hasAliveNeighbor(row-1,column-1,tempMatrix) ? 1 : 0;
-        neighbors += this.hasAliveNeighbor(row-1,column,tempMatrix) ? 1 : 0;
-        neighbors += this.hasAliveNeighbor(row-1,column+1,tempMatrix) ? 1 : 0;
-        neighbors += this.hasAliveNeighbor(row,column+1,tempMatrix) ? 1 : 0;
-        neighbors += this.hasAliveNeighbor(row+1,column+1,tempMatrix) ? 1 : 0;
-        neighbors += this.hasAliveNeighbor(row+1,column,tempMatrix) ? 1 : 0;
-        neighbors += this.hasAliveNeighbor(row+1,column-1,tempMatrix) ? 1 : 0;
-        neighbors += this.hasAliveNeighbor(row,column-1,tempMatrix) ? 1 : 0;
+    private Cell getInfectedNeighbor(List<Byte> neighbors) {
+        int numberOfNeighbors = neighbors.size();
+
+
+        List<Byte> infectedCells = Arrays.asList   (   Cell.INFECTED.getCode(), Cell.INFECTED_MASK.getCode(), 
+                                                        Cell.INFECTED_VACCINE.getCode(), Cell.INFECTED_MASK_AND_VACCINE.getCode()
+                                                    );
+
+        List<Byte> infectedNeighbors = new ArrayList<Byte>();
+
+        Map<Byte, Integer> frequencyMap = new HashMap<>();
+        
+        int maxFrequency = 0;
+
+        for (byte neighbor: neighbors) {
+            if (infectedCells.contains(neighbor)) {
+                Integer count = frequencyMap.get(neighbor);
+                if (count == null) count = 0;
+ 
+                frequencyMap.put(neighbor, count + 1);
+                maxFrequency = Math.max(maxFrequency, count + 1);
+            }
+        }
+
+        for (byte neighbor: neighbors) {
+            if (frequencyMap.containsKey(neighbor) && frequencyMap.get(neighbor) == maxFrequency) {
+                infectedNeighbors.add(neighbor);
+                frequencyMap.remove(neighbor);
+            }
+        }
+
+        SplittableRandom random = new SplittableRandom();
+        int randomNeighborIndex = random.nextInt(infectedNeighbors.size());
+
+        System.out.println(infectedNeighbors.toString() + ", " + infectedNeighbors.size() + ", " + infectedNeighbors.get(randomNeighborIndex));
+
+        return encodeCell(infectedNeighbors.get(randomNeighborIndex));
+    }
+
+    private Cell encodeCell(byte code) {
+        for (Cell cell: Cell.values()) {
+            if (code == cell.getCode()) return cell;
+        }
+
+        return null;
+    }
+
+    private List<Byte> getNeighbors(int row, int column, byte[][] tempMatrix) { //TODO: Use a For Loop
+        List<Byte> neighbors = new ArrayList<Byte>();
+
+        if (this.hasAliveNeighbor(row-1,column-1,tempMatrix)) {
+            neighbors.add(tempMatrix[row-1][column-1]);
+        }
+
+        if (this.hasAliveNeighbor(row-1,column,tempMatrix)) {
+            neighbors.add(tempMatrix[row-1][column]);
+        }
+
+        if (this.hasAliveNeighbor(row-1,column+1,tempMatrix)) {
+            neighbors.add(tempMatrix[row-1][column+1]);
+        }
+
+
+        if (this.hasAliveNeighbor(row+1,column+1,tempMatrix)) {
+            neighbors.add(tempMatrix[row][column+1]);
+        }
+
+        if (this.hasAliveNeighbor(row+1,column,tempMatrix)) {
+            neighbors.add(tempMatrix[row+1][column]);
+        }
+
+        if (this.hasAliveNeighbor(row+1,column-1,tempMatrix)) {
+            neighbors.add(tempMatrix[row+1][column-1]);
+        }
+
+
+        if (this.hasAliveNeighbor(row,column+1,tempMatrix)) {
+            neighbors.add(tempMatrix[row][column+1]);
+        }
+
+        if (this.hasAliveNeighbor(row,column-1,tempMatrix)) {
+            neighbors.add(tempMatrix[row][column-1]);
+        }
 
         return neighbors;
     }
@@ -92,7 +202,7 @@ public class Matrix {
     }
 
 
-    private void stringToMatrix(String stringMatrix) {
+    private void stringToMatrix(String stringMatrix) { // TODO: implement validation
 
         int[] commaIndexes = findCommaIndexes(stringMatrix);
 
@@ -163,7 +273,7 @@ public class Matrix {
     
 
     public static void main(String[] args) {
-        Matrix matrix = new Matrix("4,4,1001101010001010");
+        Matrix matrix = new Matrix("4,4,0000735000000000");
         matrix.updateMatrix();
     }
 }
