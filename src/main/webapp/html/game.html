@@ -76,24 +76,40 @@
             <!-------------->
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
                 <label for = "matrixRows" >Rows</label>
-                <input id = "matrixRows" onchange = "updateMatrix()" min = "1" max = "100" type = "number" class = "form-control">
+                <input id = "matrixRows" onchange = "updateMatrix(false)" min = "1" max = "100" type = "number" class = "form-control">
             </div>
             
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
                 <label for = "matrixColumns">Columns</label>
-                <input id = "matrixColumns" onchange = "updateMatrix()" min = "1" max = "100" type = "number" class = "form-control">
+                <input id = "matrixColumns" onchange = "updateMatrix(false)" min = "1" max = "100" type = "number" class = "form-control">
             </div>
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
                 <label for = "matrixZoom" id = "matrixZoomLabel"> Zoom: 1</label>
-                <input id = "matrixZoom" class = "form-control" type = "range" min = "3" max = "20" value = "3" onchange="updateZoom()">
+                <input id = "matrixZoom" class = "form-control" type = "range" min = "3" max = "20" value = "3" onchange="updateZoom(false)">
             </div>
 
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
                 <label for = "matrixSpeed" id = "matrixSpeedLabel"> Speed: 1</label>
                 <input id = "matrixSpeed" class = "form-control" type = "range" min = "1" max = "10" value = "1" onchange="updateSpeed(this)">
             </div>
-        </div>
 
+             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "matrixSpeed" id = "matrixSpeedLabel"> probability to get infected<br> with mask</label>
+                <input id = "matrixSpeed" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+            </div>
+
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "matrixSpeed" id = "matrixSpeedLabel"> probability to get infected<br>with vaccine</label>
+                <input id = "matrixSpeed" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+            </div>
+
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "matrixSpeed" id = "matrixSpeedLabel"> probability to get infected<br>without protection</label>
+                <input id = "matrixSpeed" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+            </div>
+            
+        </div>
+        
         <br>
 
         <!-- MATRIX -->
@@ -103,25 +119,21 @@
             </table>
             
         </div>
+        <br>
         <!-- MATRIX CONTROLS Bottom -->
         <div class = "form-group row justify-content-center" id = "matrixTableOptions">
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "matrixRows" min = "1" max = "100" type = "number" class = "btn btn-dark" onclick="loadPreviousState()">Previous</button>
+                <button id = "playButton" class = "btn btn-dark" onclick="startTheGame()"> Play </button>
+            </div>
+  
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <button id = "stopButton"  class = "btn btn-dark" onclick="stopTheGame()">Stop</button>
             </div>
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "matrixRows" min = "1" max = "100" type = "number" class = "btn btn-dark" onclick="startTheGame()"> Play </button>
+                <button id = "resetButton"  class = "btn btn-dark" onclick="updateMatrix()">Reset</button>
             </div>
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "matrixRows" min = "1" max = "100" type = "number" class = "btn btn-dark" onclick="pauseTheGame()">Pause</button>
-            </div>
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "matrixRows" min = "1" max = "100" type = "number" class = "btn btn-dark" onclick="stopTheGame()">Stop</button>
-            </div>
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "matrixRows" min = "1" max = "100" type = "number" class = "btn btn-dark" onclick="updateMatrix()">Reset</button>
-            </div>
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "matrixRows" min = "1" max = "100" type = "number" class = "btn btn-dark" onclick="loadNextState()">Next</button>
+                <button id = "nextButton"  class = "btn btn-dark" onclick="generateRandomMatrix(false)">Next</button>
             </div>
 
         </div>
