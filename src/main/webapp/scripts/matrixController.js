@@ -62,6 +62,7 @@ function gameLogic(){
             {
                 if(playing){
                     generateRandomMatrix(true);
+                    console.log(matrix);
                 }
             }, playSpeed);
     }
