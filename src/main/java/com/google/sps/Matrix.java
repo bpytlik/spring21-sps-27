@@ -295,12 +295,4 @@ public class Matrix {
         return stringMatrix;
     }
     
-
-    public static void main(String[] args) {
-        InfectionProbability ip = new InfectionProbability(.85, .30, .05);
-        Matrix matrix = new Matrix("4,4,0000026001500000", ip);
-        System.out.println(matrix.getStringMatrix());
-        matrix.updateMatrix();
-        System.out.println(matrix.getStringMatrix());
-    }
 }

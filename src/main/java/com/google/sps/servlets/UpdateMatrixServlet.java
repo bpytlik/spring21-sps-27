@@ -33,8 +33,7 @@ public class UpdateMatrixServlet extends HttpServlet {
 		try {
 			BufferedReader reader = request.getReader();
 			while ((line = reader.readLine()) != null) jb.append(line);
-		} 
-		catch (Exception e) { /*report an error*/ }
+		} catch (Exception e) { /*report an error*/ }
 
 		try {
 			JSONObject jsonObject = new JSONObject(jb.toString());
