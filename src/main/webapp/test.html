@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>My Portfolio</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <div id="content">
+          <form action="/updateMatrix" method="POST" class="app-form">
+            <div class="app-form-group message">
+              <input name="stringMatrix" type="textarea" class="app-form-control" placeholder="String Matrix"
+          </div>
+            <div class="app-form-group">
+                <input name="IP_NO_PROTECTION" class="app-form-control" placeholder="No protection">
+            </div>
+            <div class="app-form-group">
+                <input name="IP_WITH_MASK" class="app-form-control" placeholder="With mask">
+            </div>
+            
+            <div class="app-form-group">
+                <input name="IP_WITH_VACCINE" type="textarea" class="app-form-control" placeholder="With vaccine">
+            </div>
+            <div class="app-form-group buttons">
+                <button class="app-form-button" type="button"
+                    onclick="document.getElementById('contactForm').style.display='none'">CANCEL</button>
+                <button class="app-form-button" type="submit">SEND</button>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

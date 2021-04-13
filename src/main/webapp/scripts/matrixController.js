@@ -28,14 +28,15 @@ var cellDictionary ={
 
 var stateIndex = 0;
 
-function generateRandomMatrix(continueWithGameLogic){
+function generateRandomMatrix(){
     let oldMatrix = matrix;
     matrix =[];
     console.log("--------------------------");
     for(let row = 0; row < rows; row++){
         let newMatrixRow = [];
         for(let column = 0 ; column < columns ; column++ ){
-            let nextCell =  Math.floor( Math.random() * 8 )
+            let nextAlive =  Math.floor( Math.random() * 2 );
+            let nextCell =  (nextAlive == 1) ? Math.floor( Math.random() * 8 ) : 0;
             console.log(row.toString() + " " + column.toString() + " " + nextCell.toString());
             newMatrixRow.push(nextCell)
             document.getElementById(row.toString() + column.toString()).src = cellDictionary[ nextCell ];
@@ -50,10 +51,42 @@ function generateRandomMatrix(continueWithGameLogic){
     if ((document.getElementById("matrixRows").value != rows) || (document.getElementById("matrixColumns").value != columns)){
         updateMatrix(true);
     }
+}
 
+async function getNextIteration(continueWithGameLogic) {
 
-    if(continueWithGameLogic)
+    const body = {
+        stringMatrix: matrixToString(matrix, rows, columns),
+        IP_NO_PROTECTION: document.getElementById("IP_NO_PROTECTION").value,
+        IP_WITH_MASK: document.getElementById("IP_WITH_MASK").value,
+        IP_WITH_VACCINE: document.getElementById("IP_WITH_VACCINE").value,
+    };
+
+    const response = await fetch("/updateMatrix", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+    });
+
+    const updatedStringMatrix = await response.json();
+    console.log("hola");
+    matrix = stringToMatrix(updatedStringMatrix);
+    console.log("actualizada", matrix);
+
+    updateMatrixAfterCallingBackEnd();
+
+    
+    if(continueWithGameLogic) {
         gameLogic();
+    }
+} 
+
+function updateMatrixAfterCallingBackEnd(){
+    for(let row = 0; row < rows; row++){
+        for (let column = 0; column < columns; column++){
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[matrix[row][column]];
+        }
+    }
 }
 
 function gameLogic(){
@@ -61,7 +94,8 @@ function gameLogic(){
         timeController = setTimeout(() => 
             {
                 if(playing){
-                    generateRandomMatrix(true);
+                    getNextIteration(true);
+                    console.log(matrix);
                 }
             }, playSpeed);
     }
@@ -125,6 +159,7 @@ function updateMatrixAfterCallingBackEnd(){
         }
     }
 }
+
 
 function updateMatrixCell(object){
     let point = object.id.split(",");
@@ -227,4 +262,61 @@ function updateZoom(update){
             }
         }
     }
+}
+
+function matrixToString(matrix, n, m) {
+    let stringMatrix = n + "," + m + ",";
+
+    for(let i = 0; i < n; i++){
+        for(let j = 0; j < m; j++){
+            stringMatrix += matrix[i][j];
+        }
+    }
+
+    return stringMatrix;
+}
+
+function stringToMatrix(stringMatrix) { // TODO: implement validation
+    const commaIndexes = findCommaIndexes(stringMatrix);
+
+    const rows = parseInt(stringMatrix.substr(0, commaIndexes[0] + 1));
+    const columns = parseInt(stringMatrix.substr(commaIndexes[0] + 1, commaIndexes[1] - commaIndexes[0] - 1));
+
+    var currentCell = commaIndexes[1] + 1;
+
+    var matrix = [];
+
+    for (let row = 0; row < rows; row++) {
+        var currentRow = [];
+        for (let column = 0; column < columns; column++) {
+            const nextCell = parseInt(stringMatrix.charAt(currentCell++))
+            currentRow.push(nextCell);
+            document.getElementById(row.toString() + column.toString()).src = cellDictionary[ nextCell ];
+        }
+        matrix.push(currentRow);
+    }
+    console.log(matrix);
+    return matrix;
+
+}
+
+function findCommaIndexes(stringMatrix) { 
+    var commaIndexes = [0,0];
+
+    var firstCommaFound = false;
+
+    for (let i=0; i<stringMatrix.length; i++) {
+        if (stringMatrix.charAt(i) == ',') {
+            if (!firstCommaFound) {
+                commaIndexes[0] = i;
+                firstCommaFound = true;
+            }
+            else {
+                commaIndexes[1] = i;
+                break;
+            }
+        }
+    }
+
+    return commaIndexes;
 }
