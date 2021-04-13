@@ -31,19 +31,16 @@ var stateIndex = 0;
 function generateRandomMatrix(){
     let oldMatrix = matrix;
     matrix =[];
-    console.log("--------------------------");
     for(let row = 0; row < rows; row++){
         let newMatrixRow = [];
         for(let column = 0 ; column < columns ; column++ ){
             let nextAlive =  Math.floor( Math.random() * 2 );
             let nextCell =  (nextAlive == 1) ? Math.floor( Math.random() * 8 ) : 0;
-            console.log(row.toString() + " " + column.toString() + " " + nextCell.toString());
             newMatrixRow.push(nextCell)
-            document.getElementById(row.toString() + column.toString()).src = cellDictionary[ nextCell ];
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[ nextCell ];
         }
         matrix.push(newMatrixRow);
     }
-    console.log("--------------------------");
     if ( document.getElementById("matrixZoom").value != zoomLevel){
         updateZoom(true);
     }
@@ -69,11 +66,8 @@ async function getNextIteration(continueWithGameLogic) {
     });
 
     const updatedStringMatrix = await response.json();
-    console.log("hola");
     matrix = stringToMatrix(updatedStringMatrix);
-    console.log("actualizada", matrix);
 
-    updateMatrixAfterCallingBackEnd();
 
     
     if(continueWithGameLogic) {
@@ -81,13 +75,6 @@ async function getNextIteration(continueWithGameLogic) {
     }
 } 
 
-function updateMatrixAfterCallingBackEnd(){
-    for(let row = 0; row < rows; row++){
-        for (let column = 0; column < columns; column++){
-            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[matrix[row][column]];
-        }
-    }
-}
 
 function gameLogic(){
     if(playing){
@@ -95,7 +82,6 @@ function gameLogic(){
             {
                 if(playing){
                     getNextIteration(true);
-                    console.log(matrix);
                 }
             }, playSpeed);
     }
@@ -104,7 +90,7 @@ function gameLogic(){
 function loadPreviousStateHelper(){
     for(let row = 0; row < rows ; row ++ ){
         for(let column = 0; column < columns ; column++){
-            document.getElementById(row.toString() + column.toString()).src = cellDictionary[matrix[row][column]];
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[matrix[row][column]];
         }
     }
 }
@@ -127,8 +113,6 @@ function updateCellModifier(target){
         cellWithMask = !cellWithMask;
     else
         cellWithVaccine = !cellWithVaccine;
-    console.log(cellWithMask);
-    console.log(cellWithVaccine);
 }
 
 function updateMatrix(update){
@@ -254,7 +238,7 @@ function updateZoom(update){
         for(let row = 0; row < rows; row++){
             for( let column = 0; column < columns; column++){
 
-                let cell = document.getElementById(row.toString() + column.toString());
+                let cell = document.getElementById(row.toString() + "," + column.toString());
 
                 cell.style['width'] = zoomLevel.toString() + "em";
                 cell.style['height'] = zoomLevel.toString() + "em";
@@ -291,11 +275,10 @@ function stringToMatrix(stringMatrix) { // TODO: implement validation
         for (let column = 0; column < columns; column++) {
             const nextCell = parseInt(stringMatrix.charAt(currentCell++))
             currentRow.push(nextCell);
-            document.getElementById(row.toString() + column.toString()).src = cellDictionary[ nextCell ];
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[ nextCell ];
         }
         matrix.push(currentRow);
     }
-    console.log(matrix);
     return matrix;
 
 }
