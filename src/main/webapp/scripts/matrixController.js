@@ -54,10 +54,9 @@ function generateRandomMatrix(){
 }
 
 async function getNextIteration(continueWithGameLogic) {
-    const ROWS = matrix.length;
-    const COLUMNS = matrix[0].length;
+
     const body = {
-        stringMatrix: matrixToString(matrix, ROWS, COLUMNS),
+        stringMatrix: matrixToString(matrix, rows, columns),
         IP_NO_PROTECTION: document.getElementById("IP_NO_PROTECTION").value,
         IP_WITH_MASK: document.getElementById("IP_WITH_MASK").value,
         IP_WITH_VACCINE: document.getElementById("IP_WITH_VACCINE").value,
@@ -70,13 +69,25 @@ async function getNextIteration(continueWithGameLogic) {
     });
 
     const updatedStringMatrix = await response.json();
-    console.log(updatedStringMatrix);
-    matrix = await stringToMatrix(updatedStringMatrix);
+    console.log("hola");
+    matrix = stringToMatrix(updatedStringMatrix);
+    console.log("actualizada", matrix);
+
+    updateMatrixAfterCallingBackEnd();
+
     
     if(continueWithGameLogic) {
         gameLogic();
     }
 } 
+
+function updateMatrixAfterCallingBackEnd(){
+    for(let row = 0; row < rows; row++){
+        for (let column = 0; column < columns; column++){
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[matrix[row][column]];
+        }
+    }
+}
 
 function gameLogic(){
     if(playing){
@@ -132,7 +143,7 @@ function updateMatrix(update){
             matrixToTable += rowOpening;
             for(let column = 0; column < columns; column++){
                 tempRow.push(0)
-                matrixToTable += death + "id = \"" + row.toString() + column.toString() + "\" " + updateFunction + cellClosure;
+                matrixToTable += death + "id = \"" + row.toString() + "," + column.toString() + "\" " + updateFunction + cellClosure;
             }
             matrix.push(tempRow);
             matrixToTable += rowClosure;
@@ -142,9 +153,11 @@ function updateMatrix(update){
 }
 
 
+
 function updateMatrixCell(object){
-    let row = parseInt( object.id[0] );
-    let column = parseInt( object.id[1] );
+    let point = object.id.split(",");
+    let row = parseInt( point[0] );
+    let column = parseInt( point[1] );
     switch( selectedCellType ){
         case "deadCell":
             object.src = "../images/dead cell.png";
