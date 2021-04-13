@@ -10,6 +10,9 @@ import java.util.SplittableRandom;
 /** 
  * 
  */
+
+
+ 
 enum Cell {
 
     DEAD ((byte) '0'),
@@ -145,6 +148,7 @@ public class Matrix {
             }
         }
 
+        if(infectedNeighbors.isEmpty()) return null;
         SplittableRandom random = new SplittableRandom();
         int randomNeighborIndex = random.nextInt(infectedNeighbors.size());
 
@@ -293,14 +297,10 @@ public class Matrix {
     
 
     public static void main(String[] args) {
-        /*InfectionProbability ip = new InfectionProbability(.855, .206, .53);
-        Matrix matrix = new Matrix("4,4,0000735000000000", ip);
+        InfectionProbability ip = new InfectionProbability(.85, .30, .05);
+        Matrix matrix = new Matrix("4,4,0000026001500000", ip);
         System.out.println(matrix.getStringMatrix());
         matrix.updateMatrix();
         System.out.println(matrix.getStringMatrix());
-        */
     }
 }
-
-
-
