@@ -109,7 +109,7 @@ function updateMatrix(update){
             matrixToTable += rowOpening;
             for(let column = 0; column < columns; column++){
                 tempRow.push(0)
-                matrixToTable += death + "id = \"" + row.toString() + column.toString() + "\" " + updateFunction + cellClosure;
+                matrixToTable += death + "id = \"" + row.toString() + "," + column.toString() + "\" " + updateFunction + cellClosure;
             }
             matrix.push(tempRow);
             matrixToTable += rowClosure;
@@ -118,10 +118,18 @@ function updateMatrix(update){
     }
 }
 
+function updateMatrixAfterCallingBackEnd(){
+    for(let row = 0; row < rows; row++){
+        for (let column = 0; column < columns; column++){
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[matrix[row][column]];
+        }
+    }
+}
 
 function updateMatrixCell(object){
-    let row = parseInt( object.id[0] );
-    let column = parseInt( object.id[1] );
+    let point = object.id.split(",");
+    let row = parseInt( point[0] );
+    let column = parseInt( point[1] );
     switch( selectedCellType ){
         case "deadCell":
             object.src = "../images/dead cell.png";
@@ -166,6 +174,7 @@ function updateMatrixCell(object){
 function updateMaskProbability(object){
     document.getElementById("maskProbabilityLabel").innerText = "Probability to get infected with mask: " + object.value.toString();
 }
+
 function updateSelectedCellType(object){
     selectedCellType = object.id;
     switch(selectedCellType)
