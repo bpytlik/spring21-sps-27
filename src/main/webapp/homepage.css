@@ -8,11 +8,17 @@ h1.gameTitle{
 }
 img {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
   margin: top 20px; bottom: 20px;;
   max-width: 100%;
   height: auto;
-  width: 50%;
 }
 
+
+.aButton:hover img{
+    opacity: 0.3;
+}
+
+#superGif{
+    margin-bottom: -10%;
+    margin-top: -8%;
+}

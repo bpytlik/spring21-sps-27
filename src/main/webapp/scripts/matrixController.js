@@ -1,7 +1,7 @@
 var rowOpening = "<tr>";
 var rowClosure = "</tr>";
 var cellZoom = "style = \"width: 3em; height: 3em\"";
-var zoomLevel = 3;
+var zoomLevel = 0.5;
 var alive = "<td class = \"matrixCell\"><img src = \"../images/alive normal cell.png\" " + cellZoom+"class = \"table-image\" ";
 var death = "<td class = \"matrixCell\"><img src = \"../images/dead cell.png\" "+cellZoom+"class = \"table-image\" ";
 var cellClosure = "></td>";
@@ -56,18 +56,27 @@ async function getNextIteration(continueWithGameLogic) {
         stringMatrix: matrixToString(matrix, rows, columns),
         IP_NO_PROTECTION: document.getElementById("IP_NO_PROTECTION").value,
         IP_WITH_MASK: document.getElementById("IP_WITH_MASK").value,
-        IP_WITH_VACCINE: document.getElementById("IP_WITH_VACCINE").value,
+        IP_WITH_VACCINE: document.getElementById("IP_WITH_VACCINE").value
     };
-
+    
     const response = await fetch("/updateMatrix", {
         method: "post",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify(body)
     });
 
-    const updatedStringMatrix = await response.json();
-    matrix = stringToMatrix(updatedStringMatrix);
 
+    const updatedStringMatrix = await response.json();
+    
+    matrix = stringToMatrix(updatedStringMatrix);
+    
+    if ( document.getElementById("matrixZoom").value != zoomLevel){
+        updateZoom(true);
+    }
+
+    if ((document.getElementById("matrixRows").value != rows) || (document.getElementById("matrixColumns").value != columns)){
+        updateMatrix(true);
+    }
 
     
     if(continueWithGameLogic) {
@@ -228,13 +237,15 @@ function updateVaccineProbability(object){
 }
 
 function updateZoom(update){
+    let level = 0.5;
     if((!playing && !update) || (playing && update)){
-        zoomLevel = document.getElementById("matrixZoom").value;
-        document.getElementById('matrixZoomLabel').innerText = "Zoom: " + (zoomLevel - 2).toString();
+        zoomLevel = document.getElementById("matrixZoom").value * level;
+        document.getElementById('matrixZoomLabel').innerText = "Zoom: " + (zoomLevel).toString();
         cellZoom = "style = \"width: "+zoomLevel+"em; height: "+zoomLevel+"em\"";
         alive = "<td class = \"matrixCell\"><img src = \"../images/alive normal cell.png\" " + cellZoom+"class = \"table-image\" ";
         death = "<td class = \"matrixCell\"><img src = \"../images/dead cell.png\" "+cellZoom+"class = \"table-image\" ";
-
+        
+        
         for(let row = 0; row < rows; row++){
             for( let column = 0; column < columns; column++){
 
