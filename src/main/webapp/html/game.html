@@ -1,144 +1,342 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <script src = "../scripts/matrixController.js"></script>
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="../css/game.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
-          crossorigin="anonymous">
-  </head>
-  <body id = "gameContainer" class = "container-fluid">
-        <br>
-        <!-- Images-->
-        <div id="gameContent" class = "row" align = "center">
-        
-            <div class = "col-sm-2">
-                <img src = "../images/Skull.png" id = "imageSkull" class = "img-responsive img-thumbnail"/>
-            </div>
-            <div class = "col-sm-8">
-                <h1 id = "gameTitle">The Game of Life</h1>
-            </div>
-            <div class = "col-sm-2">
-                <img src = "../images/Heart.png" id = "imageLife" class = "img-responsive img-thumbnail"/>
-            </div>
-        
+    <head>
+        <meta charset="UTF-8" />
+        <script src="../scripts/matrixController.js"></script>
+        <script type="module" src="/scripts/musicController.js"></script>
+
+        <title>My Portfolio</title>
+        <link rel="stylesheet" href="../css/game.css" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body id="gameContainer" class="container-fluid">
+        <div id="audio-player-container">
+            <audio
+                src="../music/bg-music.mp3"
+                preload="metadata"
+                loop="true"
+                autoplay="true"
+            >
+                <p>
+                    If you are reading this, it is because your browser does not
+                    support the audio element.
+                </p>
+            </audio>
+            <button id="play-icon"></button>
+            <span id="current-time" class="time">0:00</span>
+            <input type="range" id="seek-slider" max="100" value="0" />
+            <span id="duration" class="time">0:00</span>
+            <output id="volume-output">100</output>
+            <input type="range" id="volume-slider" max="100" value="100" />
+            <button id="mute-icon"></button>
         </div>
-        <br>
+
+        
+
+        <br />
+        <!-- Images-->
+        <div id="gameContent" class="row" align="center">
+            <div class="col-sm-2">
+                <img
+                    src="../images/Skull.png"
+                    id="imageSkull"
+                    class="img-responsive img-thumbnail"
+                />
+            </div>
+            <div class="col-sm-8">
+                <h1 id="gameTitle">The Game of Life</h1>
+            </div>
+            <div class="col-sm-2">
+                <img
+                    src="../images/Heart.png"
+                    id="imageLife"
+                    class="img-responsive img-thumbnail"
+                />
+            </div>
+        </div>
+        <br />
         <!-- MATRIX CONTROLS -->
-        <div class = "form-group row justify-content-center" id = "matrixTableOptions">
+        <div
+            class="form-group row justify-content-center"
+            id="matrixTableOptions"
+        >
             <!--Cell Type-->
-            
-            <div id = "cellType" class = "row matrixController justify-content-center" align = "center">
-                
-                <div  id = "cellSelectContainer" class = "row  justify-content-center">
-                    <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                        <br>
-                        <label for = "deadCell" class = "matrixController">Dead Cell</label><br>
-                        <img   
-                            id = "deadCell" 
-                            class = "col-xs-auto matrixController justify-content-center cellSelector" 
-                            src = "../images/dead selected.png" 
+
+            <div
+                id="cellType"
+                class="row matrixController justify-content-center"
+                align="center"
+            >
+                <div
+                    id="cellSelectContainer"
+                    class="row justify-content-center"
+                >
+                    <div
+                        class="col-xs-auto matrixController justify-content-center"
+                        align="center"
+                    >
+                        <br />
+                        <label for="deadCell" class="matrixController"
+                            >Dead Cell</label
+                        ><br />
+                        <img
+                            id="deadCell"
+                            class="col-xs-auto matrixController justify-content-center cellSelector"
+                            src="../images/dead selected.png"
                             onclick="updateSelectedCellType(this)"
+                        />
+                    </div>
+                    <div
+                        class="col-xs-auto matrixController justify-content-center"
+                        align="center"
+                    >
+                        <br />
+                        <label for="aliveCell">Alive Cell</label><br />
+                        <img
+                            id="aliveCell"
+                            class="col-xs-auto matrixController justify-content-center cellSelector"
+                            src="../images/alive normal cell.png"
+                            onclick="updateSelectedCellType(this)"
+                        />
+                    </div>
+                    <div
+                        class="col-xs-auto matrixController justify-content-center"
+                        align="center"
+                    >
+                        <br />
+                        <label for="aliveCell">Infected Cell</label><br />
+                        <img
+                            id="infectedCell"
+                            class="col-xs-auto matrixController justify-content-center cellSelector"
+                            src="../images/Infected Cell.png"
+                            onclick="updateSelectedCellType(this)"
+                        />
+                    </div>
+
+                    <div
+                        class="col-xs-auto matrixController justify-content-center"
+                        align="center"
+                    >
+                        <label for="cellMask" class="cellModifierLabel"
+                            >Mask</label
                         >
+                        <input
+                            id="cellMask"
+                            onchange="updateCellModifier('mask')"
+                            type="checkbox"
+                            class="form-control cellModifier"
+                        />
                     </div>
-                    <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                        <br>
-                        <label for = "aliveCell">Alive Cell</label><br>
-                        <img  
-                            id = "aliveCell" 
-                            class = "col-xs-auto matrixController justify-content-center cellSelector"  
-                            src = "../images/alive normal cell.png" 
-                            onclick="updateSelectedCellType(this)">
-                    </div>
-                    <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                        <br>
-                        <label for = "aliveCell">Infected Cell</label><br>
-                        <img  
-                            id = "infectedCell" 
-                            class = "col-xs-auto matrixController justify-content-center cellSelector"  
-                            src = "../images/Infected Cell.png"
-                            onclick="updateSelectedCellType(this)">
-                    </div>
-                    
-                    <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                        <label for = "cellMask" class = "cellModifierLabel">Mask</label>
-                        <input id = "cellMask" onchange = "updateCellModifier('mask')" type = "checkbox" class = "form-control cellModifier">
-                    </div>
-                    <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                        <label for = "cellVaccine" class = "cellModifierLabel" >Vaccine</label>
-                        <input id = "cellVaccine" onchange = "updateCellModifier('vaccine')"  type = "checkbox" class = "form-control cellModifier">
+                    <div
+                        class="col-xs-auto matrixController justify-content-center"
+                        align="center"
+                    >
+                        <label for="cellVaccine" class="cellModifierLabel"
+                            >Vaccine</label
+                        >
+                        <input
+                            id="cellVaccine"
+                            onchange="updateCellModifier('vaccine')"
+                            type="checkbox"
+                            class="form-control cellModifier"
+                        />
                     </div>
                 </div>
             </div>
-            
+
             <!-------------->
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "matrixRows" >Rows</label>
-                <input id = "matrixRows" onchange = "updateMatrix(false)" min = "1" max = "100" type = "number" class = "form-control">
-            </div>
-            
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "matrixColumns">Columns</label>
-                <input id = "matrixColumns" onchange = "updateMatrix(false)" min = "1" max = "100" type = "number" class = "form-control">
-            </div>
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "matrixZoom" id = "matrixZoomLabel"> Zoom: 1</label>
-                <input id = "matrixZoom" class = "form-control" type = "range" min = "3" max = "20" value = "3" onchange="updateZoom(false)">
-            </div>
-
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "matrixSpeed" id = "matrixSpeedLabel"> Speed: 1</label>
-                <input id = "matrixSpeed" class = "form-control" type = "range" min = "1" max = "10" value = "1" onchange="updateSpeed(this)">
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <label for="matrixRows">Rows</label>
+                <input
+                    id="matrixRows"
+                    onchange="updateMatrix(false)"
+                    min="1"
+                    max="100"
+                    type="number"
+                    class="form-control"
+                />
             </div>
 
-             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "IP_WITH_MASK" id = "IP_WITH_MASK_LABEL"> probability to get infected<br> with mask</label>
-                <input id = "IP_WITH_MASK" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <label for="matrixColumns">Columns</label>
+                <input
+                    id="matrixColumns"
+                    onchange="updateMatrix(false)"
+                    min="1"
+                    max="100"
+                    type="number"
+                    class="form-control"
+                />
+            </div>
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <label for="matrixZoom" id="matrixZoomLabel"> Zoom: 1</label>
+                <input
+                    id="matrixZoom"
+                    class="form-control"
+                    type="range"
+                    min="3"
+                    max="20"
+                    value="3"
+                    onchange="updateZoom(false)"
+                />
             </div>
 
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "IP_WITH_VACCINE" id = "IP_WITH_VACCINE_LABEL"> probability to get infected<br>with vaccine</label>
-                <input id = "IP_WITH_VACCINE" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <label for="matrixSpeed" id="matrixSpeedLabel"> Speed: 1</label>
+                <input
+                    id="matrixSpeed"
+                    class="form-control"
+                    type="range"
+                    min="1"
+                    max="10"
+                    value="1"
+                    onchange="updateSpeed(this)"
+                />
             </div>
 
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "IP_NO_PROTECTION" id = "IP_NO_PROTECTION_LABEL"> probability to get infected<br>without protection</label>
-                <input id = "IP_NO_PROTECTION" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <label for="IP_WITH_MASK" id="IP_WITH_MASK_LABEL">
+                    probability to get infected<br />
+                    with mask</label
+                >
+                <input
+                    id="IP_WITH_MASK"
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder="0 - 100"
+                />
             </div>
-            
+
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <label for="IP_WITH_VACCINE" id="IP_WITH_VACCINE_LABEL">
+                    probability to get infected<br />with vaccine</label
+                >
+                <input
+                    id="IP_WITH_VACCINE"
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder="0 - 100"
+                />
+            </div>
+
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <label for="IP_NO_PROTECTION" id="IP_NO_PROTECTION_LABEL">
+                    probability to get infected<br />without protection</label
+                >
+                <input
+                    id="IP_NO_PROTECTION"
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder="0 - 100"
+                />
+            </div>
         </div>
-        
-        <br>
+
+        <br />
 
         <!-- MATRIX -->
-        <div id = "gameMatrix"  align = "center">
-            <table id = "matrixTable" >
-               
-            </table>
-            
+        <div id="gameMatrix" align="center">
+            <table id="matrixTable"></table>
         </div>
-        <br>
+        <br />
         <!-- MATRIX CONTROLS Bottom -->
-        <div class = "form-group row justify-content-center" id = "matrixTableOptions">
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "playButton" class = "btn btn-dark" onclick="startTheGame()"> Play </button>
-            </div>
-  
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "stopButton"  class = "btn btn-dark" onclick="stopTheGame()">Stop</button>
-            </div>
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "resetButton"  class = "btn btn-dark" onclick="updateMatrix()">Reset</button>
-            </div>
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "nextButton"  class = "btn btn-dark" onclick="getNextIteration(true)">Next</button>
-            </div>
-            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "randomButton"  class = "btn btn-dark" onclick="generateRandomMatrix()">Random</button>
+        <div
+            class="form-group row justify-content-center"
+            id="matrixTableOptions"
+        >
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <button
+                    id="playButton"
+                    class="btn btn-dark"
+                    onclick="startTheGame()"
+                >
+                    Play
+                </button>
             </div>
 
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <button
+                    id="stopButton"
+                    class="btn btn-dark"
+                    onclick="stopTheGame()"
+                >
+                    Stop
+                </button>
+            </div>
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <button
+                    id="resetButton"
+                    class="btn btn-dark"
+                    onclick="updateMatrix()"
+                >
+                    Reset
+                </button>
+            </div>
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <button
+                    id="nextButton"
+                    class="btn btn-dark"
+                    onclick="getNextIteration(true)"
+                >
+                    Next
+                </button>
+            </div>
+            <div
+                class="col-xs-auto matrixController justify-content-center"
+                align="center"
+            >
+                <button
+                    id="randomButton"
+                    class="btn btn-dark"
+                    onclick="generateRandomMatrix()"
+                >
+                    Random
+                </button>
+            </div>
         </div>
-  </body>
+    </body>
 </html>
