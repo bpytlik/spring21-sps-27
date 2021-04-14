@@ -1,0 +1,28 @@
+body{
+  background-color: black;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.list-group-item{
+    background-color: black;
+}
+
+@media (orientation: landscape) {
+  h2 {
+    font-size: 5vh;
+  }
+
+  ol{
+      font-size: 3vh;
+  }
+}
+
+@media (orientation: portrait) {
+   h2 {
+    font-size: 5vw;
+  }
+  ol{
+      font-size: 3vw;
+  }
+}
