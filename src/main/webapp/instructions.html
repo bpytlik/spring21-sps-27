@@ -7,26 +7,35 @@
         <!--Bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <!--CSS-->
-        <link rel="stylesheet" href="homepage.css">
+        <link rel="stylesheet" href="/css/instructions.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
         <title>How to Play</title>
     </head>
     <body>
-        <div class = "row">
-            <div class = "col-4"></div>
-            <div class = "col-4">
-                <div class= "row">
-                    <img src="homeImages/mainlogo.GIF">
-                </div>
-                <div class= "row">
-                    <img src="homeImages/mainlogo.GIF">
-                </div>
-            </div>
-            <div class = "col-4"></div>
-        </div>
-        
-        <!--JSfor bootstrap-->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>   
+        <div class = "container-fluid" align = "center" >
+            <br>
+            <h2 >Instructions</h2>
+            <ol class = "list-group">
+                <li class="list-group-item">1) Define the amount of rows and columns of the matrix</li>
+                <br>
+                <li class="list-group-item">2) Set the probabilities</li>
+                <br>
+                <li class="list-group-item">3) Change some cells or hit the random button to generate a random configuration</li>
+                <li class="list-group-item">4) Click play and enjoy!</li>
+            </ol>
+
+            <br>
+            <br>
+            <h2>Rules</h2>
+            <ol class = "list-group">
+                <li class="list-group-item">Any live cell with two or three live neighbours survives.</li>
+                <br>
+                <li class="list-group-item">Any dead cell with three live neighbours becomes a live cell.</li>
+                <br>
+                <li class="list-group-item">All other live cells die in the next generation. Similarly, all other dead cells stay dead.</li>
+
+            </ol>
+        </div>  
     </body>
 </html>

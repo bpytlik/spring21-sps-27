@@ -1,14 +1,15 @@
 var rowOpening = "<tr>";
-var rowClosure = "</tr>";
-var cellZoom = "style = \"width: 3em; height: 3em\"";
+var rowClosure = "</tr>"; 
+var cellZoom = "style = \"width: 0.5em; height: 0.5em\"; \"border-colapse\": \"colapsed\"; \"border-spacing\": 0;";
 var zoomLevel = 0.5;
 var alive = "<td class = \"matrixCell\"><img src = \"../images/alive normal cell.png\" " + cellZoom+"class = \"table-image\" ";
 var death = "<td class = \"matrixCell\"><img src = \"../images/dead cell.png\" "+cellZoom+"class = \"table-image\" ";
 var cellClosure = "></td>";
-var rows = 0;
-var columns = 0;
+var rows = 10;
+var columns = 10;
 var selectedCellType = "deadCell"
-var matrix = [[0,0,0],[0,0,0],[0,0,0]];
+var matrix = [[1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0],
+              [1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0]];
 var playSpeed = 1000;
 var cellWithMask = false;
 var cellWithVaccine = false;
@@ -46,14 +47,14 @@ function generateRandomMatrix(){
     }
 
     if ((document.getElementById("matrixRows").value != rows) || (document.getElementById("matrixColumns").value != columns)){
-        updateMatrix(true);
+        updateMatrixAfterChangingSize(true);
     }
 }
 
 async function getNextIteration(continueWithGameLogic) {
 
     const body = {
-        stringMatrix: matrixToString(matrix, rows, columns),
+        stringMatrix: matrixToString(),
         IP_NO_PROTECTION: document.getElementById("IP_NO_PROTECTION").value,
         IP_WITH_MASK: document.getElementById("IP_WITH_MASK").value,
         IP_WITH_VACCINE: document.getElementById("IP_WITH_VACCINE").value
@@ -75,7 +76,7 @@ async function getNextIteration(continueWithGameLogic) {
     }
 
     if ((document.getElementById("matrixRows").value != rows) || (document.getElementById("matrixColumns").value != columns)){
-        updateMatrix(true);
+        updateMatrixAfterChangingSize(true);
     }
 
     
@@ -124,7 +125,7 @@ function updateCellModifier(target){
         cellWithVaccine = !cellWithVaccine;
 }
 
-function updateMatrix(update){
+function updateMatrixAfterChangingSize(update){
     if((!playing && !update) || (playing && update)){
         matrix = []
         rows = document.getElementById("matrixRows").value;
@@ -259,15 +260,17 @@ function updateZoom(update){
     }
 }
 
-function matrixToString(matrix, n, m) {
-    let stringMatrix = n + "," + m + ",";
-
-    for(let i = 0; i < n; i++){
-        for(let j = 0; j < m; j++){
+function matrixToString() {
+    let stringMatrix = rows.toString() + "," + columns.toString() + ",";
+    console.log(rows.toString() + ','+ columns.toString() + "TWOKWR");
+    console.log(matrix);
+    for(let i = 0; i < rows; i++){
+        for(let j = 0; j < columns; j++){
+            console.log(i.toString() + "," + j.toString())
             stringMatrix += matrix[i][j];
         }
     }
-
+    
     return stringMatrix;
 }
 
