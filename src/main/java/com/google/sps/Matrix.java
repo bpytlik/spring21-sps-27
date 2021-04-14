@@ -7,11 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.SplittableRandom;
 
-/** 
- * 
- */
-
-
  
 enum Cell {
 
@@ -86,7 +81,10 @@ public class Matrix {
         }
         else {
             if (numberOfNeighbors == 3) {
-                this.matrix[row][column] = Cell.ALIVE.getCode();
+                Cell highestFrequencyNeighbor = getHighestFrequencyNeighbor(neighbors, false);
+                if (highestFrequencyNeighbor != null) {
+                    this.matrix[row][column] = getAliveVersionOfCell(highestFrequencyNeighbor).getCode();
+                }
             }
         }
     }
@@ -117,42 +115,52 @@ public class Matrix {
         else return cell;
     }
 
-    private Cell getInfectedNeighbor(List<Byte> neighbors) {
-        int numberOfNeighbors = neighbors.size();
+    private Cell getAliveVersionOfCell(Cell cell) {        
+        if (cell == Cell.INFECTED) return Cell.ALIVE;
+        else if (cell == Cell.INFECTED_MASK) return Cell.ALIVE_MASK;
+        else if (cell == Cell.INFECTED_VACCINE) return Cell.ALIVE_VACCINE;
+        else if (cell == Cell.INFECTED_MASK_AND_VACCINE) return Cell.ALIVE_MASK_AND_VACCINE;
+        else return cell;
+    }
 
-
+    private Cell getHighestFrequencyNeighbor(List<Byte> neighbors, boolean onlyInfected) {
         List<Byte> infectedCells = Arrays.asList   (   Cell.INFECTED.getCode(), Cell.INFECTED_MASK.getCode(), 
                                                         Cell.INFECTED_VACCINE.getCode(), Cell.INFECTED_MASK_AND_VACCINE.getCode()
                                                     );
 
-        List<Byte> infectedNeighbors = new ArrayList<Byte>();
-
         Map<Byte, Integer> frequencyMap = new HashMap<>();
-        
+        List<Byte> highestFrequencyNeighbors = new ArrayList<Byte>();
+
+
         int maxFrequency = 0;
 
         for (byte neighbor: neighbors) {
-            if (infectedCells.contains(neighbor)) {
+            if (!onlyInfected || onlyInfected && infectedCells.contains(neighbor)) {
                 Integer count = frequencyMap.get(neighbor);
                 if (count == null) count = 0;
- 
+    
                 frequencyMap.put(neighbor, count + 1);
                 maxFrequency = Math.max(maxFrequency, count + 1);
             }
         }
 
+
         for (byte neighbor: neighbors) {
             if (frequencyMap.containsKey(neighbor) && frequencyMap.get(neighbor) == maxFrequency) {
-                infectedNeighbors.add(neighbor);
+                highestFrequencyNeighbors.add(neighbor);
                 frequencyMap.remove(neighbor);
             }
         }
 
-        if(infectedNeighbors.isEmpty()) return null;
+        if(highestFrequencyNeighbors.isEmpty()) return null;
         SplittableRandom random = new SplittableRandom();
-        int randomNeighborIndex = random.nextInt(infectedNeighbors.size());
+        int randomNeighborIndex = random.nextInt(highestFrequencyNeighbors.size());
 
-        return encodeCell(infectedNeighbors.get(randomNeighborIndex));
+        return encodeCell(highestFrequencyNeighbors.get(randomNeighborIndex));
+    }
+
+    private Cell getInfectedNeighbor(List<Byte> neighbors) {
+        return getHighestFrequencyNeighbor(neighbors, true);
     }
 
     private Cell encodeCell(byte code) {
@@ -295,12 +303,4 @@ public class Matrix {
         return stringMatrix;
     }
     
-
-    public static void main(String[] args) {
-        InfectionProbability ip = new InfectionProbability(.85, .30, .05);
-        Matrix matrix = new Matrix("4,4,0000026001500000", ip);
-        System.out.println(matrix.getStringMatrix());
-        matrix.updateMatrix();
-        System.out.println(matrix.getStringMatrix());
-    }
 }

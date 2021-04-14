@@ -11,9 +11,7 @@ import com.google.sps.InfectionProbability;
 
 import com.google.gson.Gson;
 
-
 import java.lang.Object;
-
 
 import java.lang.StringBuffer;
 import java.io.BufferedReader;
@@ -33,8 +31,7 @@ public class UpdateMatrixServlet extends HttpServlet {
 		try {
 			BufferedReader reader = request.getReader();
 			while ((line = reader.readLine()) != null) jb.append(line);
-		} 
-		catch (Exception e) { /*report an error*/ }
+		} catch (Exception e) { /*report an error*/ }
 
 		try {
 			JSONObject jsonObject = new JSONObject(jb.toString());
@@ -59,10 +56,21 @@ public class UpdateMatrixServlet extends HttpServlet {
 
 			response.setContentType("application/json;");
 			response.getWriter().println(gson.toJson(updatedStringMatrix));
-		} 
-		catch (JSONException e) {
+		} catch (JSONException e) {
 		// crash and burn
+			Gson gson = new Gson();
+
+			response.setStatus(400);
+			response.getWriter().println(gson.toJson("Error parsing JSON request string"));
+
 			throw new IOException("Error parsing JSON request string");
+		} catch (NumberFormatException e) {
+			Gson gson = new Gson();
+
+			response.setStatus(400);
+			response.getWriter().println(gson.toJson("One or more probability is empty!"));
+
+			throw new IOException("One or more probability is empty!");
 		}
 
 		
