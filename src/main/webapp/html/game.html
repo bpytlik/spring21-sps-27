@@ -150,49 +150,19 @@
             </div>
 
             <!-------------->
-            <div
-                class="col-xs-auto matrixController justify-content-center"
-                align="center"
-            >
-                <label for="matrixRows">Rows</label>
-                <input
-                    id="matrixRows"
-                    onchange="updateMatrix(false)"
-                    min="1"
-                    max="100"
-                    type="number"
-                    class="form-control"
-                />
-            </div>
 
-            <div
-                class="col-xs-auto matrixController justify-content-center"
-                align="center"
-            >
-                <label for="matrixColumns">Columns</label>
-                <input
-                    id="matrixColumns"
-                    onchange="updateMatrix(false)"
-                    min="1"
-                    max="100"
-                    type="number"
-                    class="form-control"
-                />
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "matrixRows" >Rows</label>
+                <input id = "matrixRows" onchange = "updateMatrixAfterChangingSize(false)" min = "1" value = 10 max = "100" type = "number" class = "form-control">
             </div>
-            <div
-                class="col-xs-auto matrixController justify-content-center"
-                align="center"
-            >
-                <label for="matrixZoom" id="matrixZoomLabel"> Zoom: 1</label>
-                <input
-                    id="matrixZoom"
-                    class="form-control"
-                    type="range"
-                    min="3"
-                    max="20"
-                    value="3"
-                    onchange="updateZoom(false)"
-                />
+            
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "matrixColumns">Columns</label>
+                <input id = "matrixColumns" onchange = "updateMatrixAfterChangingSize(false)" min = "1" value = 10 max = "100" type = "number" class = "form-control">
+            </div>
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "matrixZoom" id = "matrixZoomLabel"> Zoom: 1</label>
+                <input id = "matrixZoom" class = "form-control" type = "range" min = "1" max = "40" value = 1 onchange="updateZoom(false)">
             </div>
 
             <div
@@ -211,64 +181,551 @@
                 />
             </div>
 
-            <div
-                class="col-xs-auto matrixController justify-content-center"
-                align="center"
-            >
-                <label for="IP_WITH_MASK" id="IP_WITH_MASK_LABEL">
-                    probability to get infected<br />
-                    with mask</label
-                >
-                <input
-                    id="IP_WITH_MASK"
-                    class="form-control"
-                    type="number"
-                    min="0"
-                    max="100"
-                    placeholder="0 - 100"
-                />
+
+             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "IP_WITH_MASK" id = "IP_WITH_MASK_LABEL"> probability to get infected<br> with mask</label>
+                <input id = "IP_WITH_MASK" class = "form-control" type = "number" min = "0" max = "100" value = 40 placeholder="0 - 100">
             </div>
 
-            <div
-                class="col-xs-auto matrixController justify-content-center"
-                align="center"
-            >
-                <label for="IP_WITH_VACCINE" id="IP_WITH_VACCINE_LABEL">
-                    probability to get infected<br />with vaccine</label
-                >
-                <input
-                    id="IP_WITH_VACCINE"
-                    class="form-control"
-                    type="number"
-                    min="0"
-                    max="100"
-                    placeholder="0 - 100"
-                />
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "IP_WITH_VACCINE" id = "IP_WITH_VACCINE_LABEL"> probability to get infected<br>with vaccine</label>
+                <input id = "IP_WITH_VACCINE" class = "form-control" type = "number" min = "0" max = "100" value = 20 placeholder="0 - 100">
             </div>
 
-            <div
-                class="col-xs-auto matrixController justify-content-center"
-                align="center"
-            >
-                <label for="IP_NO_PROTECTION" id="IP_NO_PROTECTION_LABEL">
-                    probability to get infected<br />without protection</label
-                >
-                <input
-                    id="IP_NO_PROTECTION"
-                    class="form-control"
-                    type="number"
-                    min="0"
-                    max="100"
-                    placeholder="0 - 100"
-                />
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <label for = "IP_NO_PROTECTION" id = "IP_NO_PROTECTION_LABEL"> probability to get infected<br>without protection</label>
+                <input id = "IP_NO_PROTECTION" class = "form-control" type = "number" min = "0" max = "100" value = 80 placeholder="0 - 100">
             </div>
         </div>
 
         <br />
 
         <!-- MATRIX -->
-        <div id="gameMatrix" align="center">
-            <table id="matrixTable"></table>
+
+        <div id = "gameMatrix"  align = "center">
+            <table id = "matrixTable" >
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "0,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "1,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "2,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "3,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "4,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "5,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "6,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "7,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "8,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+                <tr>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,0" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,1" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,2" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,3" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/alive normal cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,4" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,5" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,6" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,7" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,8" +
+                        onclick = "updateMatrixCell(this)"></td>
+                    <td class = "matrixCell"><img src = "../images/dead cell.png" 
+                        style = "width: 0.5em; height: 0.5em; border-colapse: colapsed; border-spacing: 0;" 
+                        class = table-image
+                        id = "9,9" +
+                        onclick = "updateMatrixCell(this)"></td>
+                </tr>
+            </table>
+            
         </div>
         <br />
         <!-- MATRIX CONTROLS Bottom -->
@@ -301,17 +758,9 @@
                     Stop
                 </button>
             </div>
-            <div
-                class="col-xs-auto matrixController justify-content-center"
-                align="center"
-            >
-                <button
-                    id="resetButton"
-                    class="btn btn-dark"
-                    onclick="updateMatrix()"
-                >
-                    Reset
-                </button>
+
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <button id = "resetButton"  class = "btn btn-dark" onclick="updateMatrixAfterChangingSize()">Reset</button>
             </div>
             <div
                 class="col-xs-auto matrixController justify-content-center"
