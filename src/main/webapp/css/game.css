@@ -1,72 +1,136 @@
-.cellModifier{
+.cellModifier {
     margin-top: 0.8em;
     font-size: 1em;
 }
 
-.cellModifierLabel{
+.cellModifierLabel {
     margin-top: 1.5em;
     font-size: 1em;
 }
 
-.cellSelector{
+.cellSelector {
     width: 3.5em;
     height: 3.5em;
 }
 
-#cellSelectContainer{
+#cellSelectContainer {
     margin-top: -0.4em;
     margin-right: 1em;
     margin-bottom: 1em;
 }
 
-#cellType{
+#cellType {
     margin-top: -2em;
 }
 
-#gameContainer{
+#gameContainer {
     background-color: black;
-    color:white;
+    color: white;
 }
 
-
-#gameMatrix{
+#gameMatrix {
     overflow: auto;
-    height: 50vh;;
+    height: 50vh;
 }
 
-#imageSkull{
-    display: inline-block
+#imageSkull {
+    display: inline-block;
 }
 #imageLife {
     display: inline-block;
 }
 
-#matrixCell{
+#matrixCell {
     border: 1px solid black;
     width: 100px;
     max-width: 100px;
 }
 
-.matrixController{
+.matrixController {
     margin-left: 1em;
     margin-right: 1em;
 }
 
-#matrixTable{
+#matrixTable {
     overflow: auto;
     table-layout: auto;
 }
 
-#selectCellLabel{
-    border: 1em inset white;;
+#selectCellLabel {
+    border: 1em inset white;
 }
 
-.table-image{
+.table-image {
     border: 1px solid black;
-    white-space: pre-wrap;        /* css */
-    white-space: -moz-pre-wrap;   /* Mozilla */
-    white-space: -pre-wrap;       /* Chrome*/
-    white-space: -o-pre-wrap;     /* Opera 7 */
+    white-space: pre-wrap; /* css */
+    white-space: -moz-pre-wrap; /* Mozilla */
+    white-space: -pre-wrap; /* Chrome*/
+    white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 
+#mute-icon {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+#audio-player-container {
+    --seek-before-width: 0%;
+    --volume-before-width: 100%;
+    --buffered-width: 0%;
+    position: fixed;
+    bottom: 0;
+    margin: 100px 2.5% auto 2.5%;
+    width: 95%;
+    max-width: 500px;
+    height: 10%;
+    background: transparent;
+}
+
+#play-icon {
+    display: none;
+    margin: 20px 2.5% 10px 2.5%;
+    background-color: red;
+}
+
+path {
+    stroke: #007db5;
+}
+.time {
+    display: none;
+    width: 37px;
+    text-align: center;
+    font-size: 20px;
+    margin: 28.5px 0 18.5px 0;
+    float: left;
+}
+output {
+    display: none;
+    width: 32px;
+    text-align: center;
+    font-size: 20px;
+    margin: 10px 2.5% 0 5%;
+    float: left;
+    clear: left;
+}
+#volume-slider {
+    margin: 10px 2.5%;
+    width: 58%;
+}
+
+#mute-icon {
+    margin: 0 2.5%;
+}
+
+#seek-slider {
+    display: none;
+}
+
+#volume-output {
+    display: none;
+}
