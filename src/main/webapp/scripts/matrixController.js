@@ -28,21 +28,19 @@ var cellDictionary ={
 
 var stateIndex = 0;
 
-function generateRandomMatrix(continueWithGameLogic){
+function generateRandomMatrix(){
     let oldMatrix = matrix;
     matrix =[];
-    console.log("--------------------------");
     for(let row = 0; row < rows; row++){
         let newMatrixRow = [];
         for(let column = 0 ; column < columns ; column++ ){
-            let nextCell =  Math.floor( Math.random() * 8 )
-            console.log(row.toString() + " " + column.toString() + " " + nextCell.toString());
+            let nextAlive =  Math.floor( Math.random() * 2 );
+            let nextCell =  (nextAlive == 1) ? Math.floor( Math.random() * 8 ) : 0;
             newMatrixRow.push(nextCell)
-            document.getElementById(row.toString() + column.toString()).src = cellDictionary[ nextCell ];
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[ nextCell ];
         }
         matrix.push(newMatrixRow);
     }
-    console.log("--------------------------");
     if ( document.getElementById("matrixZoom").value != zoomLevel){
         updateZoom(true);
     }
@@ -50,18 +48,40 @@ function generateRandomMatrix(continueWithGameLogic){
     if ((document.getElementById("matrixRows").value != rows) || (document.getElementById("matrixColumns").value != columns)){
         updateMatrix(true);
     }
-
-
-    if(continueWithGameLogic)
-        gameLogic();
 }
+
+async function getNextIteration(continueWithGameLogic) {
+
+    const body = {
+        stringMatrix: matrixToString(matrix, rows, columns),
+        IP_NO_PROTECTION: document.getElementById("IP_NO_PROTECTION").value,
+        IP_WITH_MASK: document.getElementById("IP_WITH_MASK").value,
+        IP_WITH_VACCINE: document.getElementById("IP_WITH_VACCINE").value,
+    };
+
+    const response = await fetch("/updateMatrix", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+    });
+
+    const updatedStringMatrix = await response.json();
+    matrix = stringToMatrix(updatedStringMatrix);
+
+
+    
+    if(continueWithGameLogic) {
+        gameLogic();
+    }
+} 
+
 
 function gameLogic(){
     if(playing){
         timeController = setTimeout(() => 
             {
                 if(playing){
-                    generateRandomMatrix(true);
+                    getNextIteration(true);
                 }
             }, playSpeed);
     }
@@ -70,7 +90,7 @@ function gameLogic(){
 function loadPreviousStateHelper(){
     for(let row = 0; row < rows ; row ++ ){
         for(let column = 0; column < columns ; column++){
-            document.getElementById(row.toString() + column.toString()).src = cellDictionary[matrix[row][column]];
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[matrix[row][column]];
         }
     }
 }
@@ -93,8 +113,6 @@ function updateCellModifier(target){
         cellWithMask = !cellWithMask;
     else
         cellWithVaccine = !cellWithVaccine;
-    console.log(cellWithMask);
-    console.log(cellWithVaccine);
 }
 
 function updateMatrix(update){
@@ -109,7 +127,7 @@ function updateMatrix(update){
             matrixToTable += rowOpening;
             for(let column = 0; column < columns; column++){
                 tempRow.push(0)
-                matrixToTable += death + "id = \"" + row.toString() + column.toString() + "\" " + updateFunction + cellClosure;
+                matrixToTable += death + "id = \"" + row.toString() + "," + column.toString() + "\" " + updateFunction + cellClosure;
             }
             matrix.push(tempRow);
             matrixToTable += rowClosure;
@@ -119,9 +137,11 @@ function updateMatrix(update){
 }
 
 
+
 function updateMatrixCell(object){
-    let row = parseInt( object.id[0] );
-    let column = parseInt( object.id[1] );
+    let point = object.id.split(",");
+    let row = parseInt( point[0] );
+    let column = parseInt( point[1] );
     switch( selectedCellType ){
         case "deadCell":
             object.src = "../images/dead cell.png";
@@ -210,7 +230,7 @@ function updateZoom(update){
         for(let row = 0; row < rows; row++){
             for( let column = 0; column < columns; column++){
 
-                let cell = document.getElementById(row.toString() + column.toString());
+                let cell = document.getElementById(row.toString() + "," + column.toString());
 
                 cell.style['width'] = zoomLevel.toString() + "em";
                 cell.style['height'] = zoomLevel.toString() + "em";
@@ -218,4 +238,60 @@ function updateZoom(update){
             }
         }
     }
+}
+
+function matrixToString(matrix, n, m) {
+    let stringMatrix = n + "," + m + ",";
+
+    for(let i = 0; i < n; i++){
+        for(let j = 0; j < m; j++){
+            stringMatrix += matrix[i][j];
+        }
+    }
+
+    return stringMatrix;
+}
+
+function stringToMatrix(stringMatrix) { // TODO: implement validation
+    const commaIndexes = findCommaIndexes(stringMatrix);
+
+    const rows = parseInt(stringMatrix.substr(0, commaIndexes[0] + 1));
+    const columns = parseInt(stringMatrix.substr(commaIndexes[0] + 1, commaIndexes[1] - commaIndexes[0] - 1));
+
+    var currentCell = commaIndexes[1] + 1;
+
+    var matrix = [];
+
+    for (let row = 0; row < rows; row++) {
+        var currentRow = [];
+        for (let column = 0; column < columns; column++) {
+            const nextCell = parseInt(stringMatrix.charAt(currentCell++))
+            currentRow.push(nextCell);
+            document.getElementById(row.toString() + "," + column.toString()).src = cellDictionary[ nextCell ];
+        }
+        matrix.push(currentRow);
+    }
+    return matrix;
+
+}
+
+function findCommaIndexes(stringMatrix) { 
+    var commaIndexes = [0,0];
+
+    var firstCommaFound = false;
+
+    for (let i=0; i<stringMatrix.length; i++) {
+        if (stringMatrix.charAt(i) == ',') {
+            if (!firstCommaFound) {
+                commaIndexes[0] = i;
+                firstCommaFound = true;
+            }
+            else {
+                commaIndexes[1] = i;
+                break;
+            }
+        }
+    }
+
+    return commaIndexes;
 }

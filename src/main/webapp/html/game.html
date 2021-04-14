@@ -94,18 +94,18 @@
             </div>
 
              <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "matrixSpeed" id = "matrixSpeedLabel"> probability to get infected<br> with mask</label>
-                <input id = "matrixSpeed" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+                <label for = "IP_WITH_MASK" id = "IP_WITH_MASK_LABEL"> probability to get infected<br> with mask</label>
+                <input id = "IP_WITH_MASK" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
             </div>
 
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "matrixSpeed" id = "matrixSpeedLabel"> probability to get infected<br>with vaccine</label>
-                <input id = "matrixSpeed" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+                <label for = "IP_WITH_VACCINE" id = "IP_WITH_VACCINE_LABEL"> probability to get infected<br>with vaccine</label>
+                <input id = "IP_WITH_VACCINE" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
             </div>
 
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <label for = "matrixSpeed" id = "matrixSpeedLabel"> probability to get infected<br>without protection</label>
-                <input id = "matrixSpeed" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
+                <label for = "IP_NO_PROTECTION" id = "IP_NO_PROTECTION_LABEL"> probability to get infected<br>without protection</label>
+                <input id = "IP_NO_PROTECTION" class = "form-control" type = "number" min = "0" max = "100" placeholder="0 - 100">
             </div>
             
         </div>
@@ -133,7 +133,10 @@
                 <button id = "resetButton"  class = "btn btn-dark" onclick="updateMatrix()">Reset</button>
             </div>
             <div class = "col-xs-auto matrixController justify-content-center" align = "center">
-                <button id = "nextButton"  class = "btn btn-dark" onclick="generateRandomMatrix(false)">Next</button>
+                <button id = "nextButton"  class = "btn btn-dark" onclick="getNextIteration(true)">Next</button>
+            </div>
+            <div class = "col-xs-auto matrixController justify-content-center" align = "center">
+                <button id = "randomButton"  class = "btn btn-dark" onclick="generateRandomMatrix()">Random</button>
             </div>
 
         </div>
